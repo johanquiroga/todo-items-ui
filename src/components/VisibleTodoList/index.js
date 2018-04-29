@@ -26,9 +26,9 @@ class VisibleTodoList extends Component {
   }
 
   render() {
-    const { toggleTodo, deleteTodo, todos, isFetching, errorMessage } = this.props;
+    const { toggleTodo, deleteTodo, todos, isLoading, errorMessage } = this.props;
 
-    if (todos.length === 0 && !isFetching && !errorMessage) {
+    if (todos.length === 0 && !isLoading && !errorMessage) {
       return (
         <Message warning attached='bottom'>
           <Message.Header>Oops!</Message.Header>
@@ -54,8 +54,8 @@ const mapStateToProps = (state, { match: { params }}) => {
   return {
     todos: getVisibleTodos(state, filter),
     errorMessage: getErrorMessage(state, filter),
-    isFetching: getIsFetching(state, filter),
-    filter
+    isLoading: getIsFetching(state, filter),
+    filter,
   };
 };
 

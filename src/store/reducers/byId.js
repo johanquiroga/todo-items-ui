@@ -4,7 +4,7 @@ const byId = (state = {}, action) => {
     return nextState;
   }
 
-  if (action.response) {
+  if (action.response && action.response.entities.todos) {
     return {
       ...state,
       ...action.response.entities.todos,

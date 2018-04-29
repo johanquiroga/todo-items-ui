@@ -1,13 +1,20 @@
 import axios from 'axios';
 
 const api = axios.create({
-	baseURL: 'http://localhost:3000',
+	baseURL: process.env.REACT_APP_API_URL,
 	timeout: 1000,
 	headers: {
 	  'Content-Type': 'application/json',
-    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1YWU0YzgxY2RhNzVhNTMzYzYzZDdlZWMiLCJpYXQiOjE1MjQ5NDM0MDUsImV4cCI6MTUyNDk3OTQwNX0.ZubWDT_sbjn1OTi3QtbjyDtZTPS5cVr2vMTujxDC2U4'
 	}
 });
+
+export const setApiAuthHeader = (token) => {
+	api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+};
+
+export const removeApiAuthHeader = () => {
+	delete api.default.headers.common['Authorization'];
+};
 
 const handleError = (err) => {
 	if (err.response) {
@@ -37,14 +44,14 @@ export const fetchTodos = (filter) =>
     }, err => handleError(err));
 
 export const addTodo = (todo) =>
-  api.post('/tasks', {data: todo})
+  api.post('/tasks', {...todo})
     .then(
     	response => response.data,
 		  err => handleError(err)
     );
 
 export const toggleTodo = ({id, status}) =>
-  api.put(`/tasks/${id}`, {data: {completed: !status}})
+  api.put(`/tasks/${id}`, {completed: !status})
     .then(
     	response => response.data,
 	    err => handleError(err)
@@ -59,6 +66,13 @@ export const deleteTodo = (id) =>
 
 export const editTodo = ({id, data}) =>
 	api.put(`/tasks/${id}`, {data})
+		.then(
+			response => response.data,
+			err => handleError(err)
+		);
+
+export const login = (credentials) =>
+	api.post('/users/login', credentials)
 		.then(
 			response => response.data,
 			err => handleError(err)

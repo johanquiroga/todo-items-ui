@@ -1,7 +1,17 @@
 import { normalize } from 'normalizr';
 import * as schema from './schema';
-import { getIsFetching, getIsActionLoading } from '../reducers';
+import { getIsFetching, getIsActionLoading, getIsAuthActionLoading } from '../reducers';
 import * as api from '../../api';
+
+export const handleToken = (token, action) => {
+	if (action === 'logout') {
+		api.removeApiAuthHeader();
+		return;
+	}
+	if (token && (action === 'login')) {
+		api.setApiAuthHeader(token);
+	}
+};
 
 const handleAction = (dispatch, getState) => (action, data) => {
 	if (getIsActionLoading(getState(), action)) {
@@ -37,6 +47,49 @@ const handleAction = (dispatch, getState) => (action, data) => {
 				actionName: action,
 				message: error.message || 'Something went wrong.'
 			});
+		}
+	);
+};
+
+const handleAuthAction = (dispatch, getState) => (action, data) => {
+	if (getIsAuthActionLoading(getState(), action)) {
+		return Promise.resolve();
+	}
+
+	dispatch({
+		type: `${action.toUpperCase()}_REQUEST`,
+		actionName: action,
+	});
+
+	return api[`${action}`](data).then(
+		response => {
+			if (response.success) {
+				handleToken(response.token, action);
+				dispatch({
+					type: `${action.toUpperCase()}_SUCCESS`,
+					response: normalize(response.user, schema.user),
+					token: response.token ? response.token : null,
+					actionName: action,
+				});
+				return response.success;
+			} else {
+				dispatch({
+					type: `${action.toUpperCase()}_FAILURE`,
+					actionName: action,
+					message: response.err
+						? response.err.message || 'Something went wrong.'
+						: 'Something went wrong.'
+				});
+				return response.success;
+			}
+		},
+		error => {
+			dispatch({
+				type: `${action.toUpperCase()}_FAILURE`,
+				actionName: action,
+				message: error.message || 'Something went wrong.'
+			});
+			return false;
 		}
 	);
 };
@@ -86,3 +139,5 @@ export const toggleTodo = (id, status) => (dispatch, getState) => handleAction(d
 export const deleteTodo = (id) => (dispatch, getState) => handleAction(dispatch, getState)('delete', id);
 
 export const editTodo = (id, data) => (dispatch, getState) => handleAction(dispatch, getState)('edit', {id, data});
+
+export const login = (data) => (dispatch, getState) => handleAuthAction(dispatch, getState)('login', data);

@@ -1,5 +1,8 @@
 export const loadingCondition = (props) =>
-  props.isFetching;
+  props.isLoading;
 
 export const errorCondition = (props) =>
   props.errorMessage;
+
+export const authCondition = (props) =>
+	props.isAuth;
