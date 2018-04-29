@@ -13,7 +13,7 @@ export const setApiAuthHeader = (token) => {
 };
 
 export const removeApiAuthHeader = () => {
-	delete api.default.headers.common['Authorization'];
+	delete api.defaults.headers.common['Authorization'];
 };
 
 const handleError = (err) => {
@@ -73,6 +73,13 @@ export const editTodo = ({id, data}) =>
 
 export const login = (credentials) =>
 	api.post('/users/login', credentials)
+		.then(
+			response => response.data,
+			err => handleError(err)
+		);
+
+export const logout = () =>
+	api.post('/users/logout')
 		.then(
 			response => response.data,
 			err => handleError(err)

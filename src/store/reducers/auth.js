@@ -12,7 +12,7 @@ const createAuthState = () => {
 		}
 	};
 
-	const userInfo = (state = null, action) => {
+	const userInfo = (state = {}, action) => {
 		switch (action.type) {
 			case 'REGISTER_SUCCESS':
 			case 'LOGIN_SUCCESS':

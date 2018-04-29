@@ -2,13 +2,14 @@ import { normalize } from 'normalizr';
 import * as schema from './schema';
 import { getIsFetching, getIsActionLoading, getIsAuthActionLoading } from '../reducers';
 import * as api from '../../api';
+import { removeAuthState } from '../../localStorage';
 
 export const handleToken = (token, action) => {
 	if (action === 'logout') {
 		api.removeApiAuthHeader();
-		return;
+		removeAuthState();
 	}
-	if (token && (action === 'login')) {
+	if (token && action === 'login') {
 		api.setApiAuthHeader(token);
 	}
 };
@@ -51,7 +52,7 @@ const handleAction = (dispatch, getState) => (action, data) => {
 	);
 };
 
-const handleAuthAction = (dispatch, getState) => (action, data) => {
+const handleAuthAction = (dispatch, getState) => (action, data = {}) => {
 	if (getIsAuthActionLoading(getState(), action)) {
 		return Promise.resolve();
 	}
@@ -141,3 +142,5 @@ export const deleteTodo = (id) => (dispatch, getState) => handleAction(dispatch,
 export const editTodo = (id, data) => (dispatch, getState) => handleAction(dispatch, getState)('edit', {id, data});
 
 export const login = (data) => (dispatch, getState) => handleAuthAction(dispatch, getState)('login', data);
+
+export const logout = () => (dispatch, getState) => handleAuthAction(dispatch, getState)('logout');

@@ -21,7 +21,7 @@ const configureStore = () => {
     applyMiddleware(...middlewares)
   );
 
-	if (persistedState) {
+	if (persistedState && persistedState.auth.isAuth) {
 		handleToken(persistedState.auth.authToken, 'login');
 		store.dispatch({
 			type: 'LOGIN_SUCCESS',
