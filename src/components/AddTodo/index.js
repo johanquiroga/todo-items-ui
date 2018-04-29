@@ -45,6 +45,7 @@ let AddTodo = ({dispatch, input, setInput, focused, setFocused, date, setDate, p
             inputIconPosition='after'
             noBorder
             numberOfMonths={1}
+            showClearDate
           />
         </Form.Field>
 	      <Form.Select name='priority' fluid onChange={(e, {value}) => setPriority(value)} compact options={options} placeholder='Priority' />
