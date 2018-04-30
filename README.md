@@ -4,6 +4,10 @@
 
 Este proyecto fue generado con [Create React App](https://github.com/facebookincubator/create-react-app).
 
+## Instalación
+
+Para instalar el proyecto clona este proyecto con `git clone https://github.com/johanquiroga/todo-items-ui.git`. Una vez descargado se deben instalar las dependencias ejecutando en la carpeta del peoyecto `npm install`.
+
 ## Ejecución
 
 Para la correcta ejecución de esta aplicación por favor revisar las [variables de entorno](#variables-de-entorno) necesarias para el correcto funcionamiento. Además, asegurate de que el [servidor](https://github.com/johanquiroga/todo-items-server) esté configurado y ejecutando correctamente.
