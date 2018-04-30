@@ -6,11 +6,11 @@ Este proyecto fue generado con [Create React App](https://github.com/facebookinc
 
 ## Instalación
 
-Para instalar el cliente clona este proyecto con `git clone https://github.com/johanquiroga/todo-items-ui.git`. Una vez descargado se deben instalar las dependencias ejecutando en la carpeta del peoyecto `npm install`.
+Para instalar el cliente clona este proyecto con `git clone https://github.com/johanquiroga/todo-items-ui.git`. Una vez descargado se deben instalar las dependencias ejecutando en la carpeta del proyecto `npm install`.
 
 ## Ejecución
 
-Para la correcta ejecución de esta aplicación por favor revisar las [variables de entorno](#variables-de-entorno) necesarias para el correcto funcionamiento. Además, asegurate de que el [servidor](https://github.com/johanquiroga/todo-items-server) esté configurado y ejecutando correctamente.
+Para la correcta ejecución de esta aplicación, por favor revisar las [variables de entorno](#variables-de-entorno) necesarias para el correcto funcionamiento. Además, asegúrate de que el [servidor](https://github.com/johanquiroga/todo-items-server) esté configurado y ejecutando correctamente.
 
 ## Estructura del proyecto
 
@@ -100,7 +100,6 @@ O
 
 ```sh
 npm install --save gh-pages
-``` gh-pages
 ```
 
 Agregar los siguientes scripts en `package.json`:
@@ -119,7 +118,8 @@ Agregar los siguientes scripts en `package.json`:
 npm run deploy
 ```
 
-Esto ya está configurado para este proyecto.
+**Nota**:  
+Github Pages ya está configurado para este proyecto.
 
 ## Problemas
 Si descubres algún bug, error o problema de seguridad házmelo saber enviándome un correo a johan.c.quiroga@gmail.com, o abre un issue describiendo el flujo de acciones para replicar el problema.
