@@ -1,3 +1,7 @@
+# Todo Items - Cliente
+
+![Aplicación](app.png)
+
 Este proyecto fue generado con [Create React App](https://github.com/facebookincubator/create-react-app).
 
 ## Ejecución
