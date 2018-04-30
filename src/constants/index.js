@@ -10,9 +10,9 @@ export const authCondition = (props) =>
 	props.isAuth;
 
 export const priorities = {
-	0: {text: 'Low', color: 'green'},
-	1: {text: 'Normal', color: 'orange'},
-	2: {text: 'High', color: 'red'},
+	0: {text: 'Low', color: 'green', value: 0, key: '0'},
+	1: {text: 'Normal', color: 'orange', value: 1, key: '1'},
+	2: {text: 'High', color: 'red', value: 2, key: '2'},
 };
 
 export const messages = {

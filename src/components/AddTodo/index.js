@@ -6,12 +6,9 @@ import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 import { SingleDatePicker } from 'react-dates';
 import { addTodo } from '../../store/actions';
+import { priorities } from '../../constants';
 
-const options = [
-	{key: '0', text: 'Low', value: 0},
-	{key: '1', text: 'Normal', value: 1},
-	{key: '2', text: 'High', value: 2}
-];
+const options = Object.values(priorities);
 
 let AddTodo = ({dispatch, input, setInput, focused, setFocused, date, setDate, priority, setPriority}) => (
   <Segment basic attached='top'>

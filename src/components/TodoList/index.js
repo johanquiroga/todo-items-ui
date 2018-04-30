@@ -5,7 +5,8 @@ import { List } from 'semantic-ui-react';
 const TodoList = ({
   todos,
   onTodoClick,
-  onDeleteClick
+  onDeleteClick,
+  onTodoEdit,
 }) => (
   <List link divided relaxed size='big'>
     {todos.map(todo =>
@@ -14,6 +15,7 @@ const TodoList = ({
         {...todo}
         onTodoClick={() => onTodoClick(todo._id, todo.completed)}
         onDeleteClick={() => onDeleteClick(todo._id)}
+        onTodoEdit={onTodoEdit}
       />
     )}
   </List>

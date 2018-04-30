@@ -26,7 +26,7 @@ class VisibleTodoList extends Component {
   }
 
   render() {
-    const { toggleTodo, deleteTodo, todos, isLoading, errorMessage } = this.props;
+    const { toggleTodo, deleteTodo, editTodo, todos, isLoading, errorMessage } = this.props;
 
     if (todos.length === 0 && !isLoading && !errorMessage) {
       return (
@@ -43,6 +43,7 @@ class VisibleTodoList extends Component {
           todos={todos}
           onTodoClick={toggleTodo}
           onDeleteClick={deleteTodo}
+          onTodoEdit={editTodo}
         />
       </Segment>
     );
