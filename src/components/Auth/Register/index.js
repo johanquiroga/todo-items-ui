@@ -3,9 +3,9 @@ import { Container, Grid, Header, Form, Segment, Message, Button, List } from 's
 import { NavLink, Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { register } from '../../../store/actions';
+import { messages, validators } from '../../../constants';
 import { compose } from 'recompose';
 import { getAuthActionErrorMessage, getIsAuth, getIsAuthActionLoading } from '../../../store/reducers';
-import validator from 'validator';
 
 const initialErrors = {
 	email: null,
@@ -41,20 +41,6 @@ class Register extends Component {
 
 	toHome = () => this.props.history.replace('/');
 
-	messages = {
-		email: 'Please enter a valid E-mail',
-		password: 'Passwords don\'t match',
-		firstName: 'First name must not contain numbers or spaces',
-		lastName: 'Last name must not contain numbers or spaces',
-	};
-
-	validators = {
-		email: validator.isEmail,
-		password: validator.equals,
-		firstName: validator.isAlpha,
-		lastName: validator.isAlpha,
-	};
-
 	handleChange = (e, {name, value}) => this.setState({ [name]: value });
 
 	handleSubmit = () => {
@@ -81,15 +67,15 @@ class Register extends Component {
 
 	validateInput = () => {
 		for (const input in this.state) {
-			if (this.validators.hasOwnProperty(input) && this.messages.hasOwnProperty(input)) {
+			if (validators.hasOwnProperty(input) && messages.hasOwnProperty(input)) {
 				let error = null;
 				if (input === 'password') {
-					if (!this.validators[input](this.state[input], this.state[input+'Confirmation'])) {
-						error = this.messages[input];
+					if (!validators[input](this.state[input], this.state[input+'Confirmation'])) {
+						error = messages[input];
 					}
 				} else {
-					if (!this.validators[input](this.state[input])) {
-						error = this.messages[input];
+					if (!validators[input](this.state[input])) {
+						error = messages[input];
 					}
 				}
 				this.setState((prevState) => ({
