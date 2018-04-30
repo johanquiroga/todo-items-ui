@@ -6,7 +6,7 @@ Este proyecto fue generado con [Create React App](https://github.com/facebookinc
 
 ## Instalación
 
-Para instalar el proyecto clona este proyecto con `git clone https://github.com/johanquiroga/todo-items-ui.git`. Una vez descargado se deben instalar las dependencias ejecutando en la carpeta del peoyecto `npm install`.
+Para instalar el cliente clona este proyecto con `git clone https://github.com/johanquiroga/todo-items-ui.git`. Una vez descargado se deben instalar las dependencias ejecutando en la carpeta del peoyecto `npm install`.
 
 ## Ejecución
 
