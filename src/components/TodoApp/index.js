@@ -22,7 +22,7 @@ const TodoApp = ({user, logout}) => (
       <Grid.Column>
 	      <Menu secondary widths={3}>
 		      <Menu.Item>
-			      <img src={logo} />
+			      <img src={logo} alt='Todo items logo' />
 		      </Menu.Item>
 		      <Menu.Item>
 			      <Header as='h1' color='teal'>

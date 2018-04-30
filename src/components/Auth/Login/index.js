@@ -2,11 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Container, Grid, Header, Form, Segment, Message, Button } from 'semantic-ui-react';
 import { Link, withRouter } from 'react-router-dom';
-import { withState, compose, branch, renderComponent } from 'recompose';
+import { withState, compose, lifecycle } from 'recompose';
 import { getAuthActionErrorMessage, getIsAuth, getIsAuthActionLoading } from '../../../store/reducers';
 import { login } from '../../../store/actions';
-import TodoApp from '../../TodoApp';
-import { authCondition } from '../../../constants';
 
 const Login = ({login, isLoading, errorMessage, email, setEmail, password, setPassword, history}) => (
 	<Container text>
@@ -61,7 +59,7 @@ const Login = ({login, isLoading, errorMessage, email, setEmail, password, setPa
 					</Segment>
 				</Form>
 				<Message>
-					Already have an account? <Link to='/register'>Sign Up</Link>
+					Don't have an account? <Link to='/register'>Sign Up</Link>
 				</Message>
 			</Grid.Column>
 		</Grid>
@@ -81,8 +79,11 @@ export default compose(
 	connect(mapStateToProps, {login}),
 	withState('email', 'setEmail', ''),
 	withState('password', 'setPassword', ''),
-	branch(
-		authCondition,
-		renderComponent(TodoApp)
-	)
+	lifecycle({
+		componentWillMount() {
+			if (this.props.isAuth) {
+				this.props.history.replace('/');
+			}
+		}
+	})
 )(Login);

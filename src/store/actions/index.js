@@ -4,16 +4,6 @@ import { getIsFetching, getIsActionLoading, getIsAuthActionLoading } from '../re
 import * as api from '../../api';
 import { removeAuthState } from '../../localStorage';
 
-export const handleToken = (token, action) => {
-	if (action === 'logout') {
-		api.removeApiAuthHeader();
-		removeAuthState();
-	}
-	if (token && action === 'login') {
-		api.setApiAuthHeader(token);
-	}
-};
-
 const handleAction = (dispatch, getState) => (action, data) => {
 	if (getIsActionLoading(getState(), action)) {
 		return Promise.resolve();
@@ -52,6 +42,16 @@ const handleAction = (dispatch, getState) => (action, data) => {
 	);
 };
 
+export const handleToken = (token, action) => {
+	if (action === 'logout') {
+		api.removeApiAuthHeader();
+		removeAuthState();
+	}
+	if (token && action === 'login') {
+		api.setApiAuthHeader(token);
+	}
+};
+
 const handleAuthAction = (dispatch, getState) => (action, data = {}) => {
 	if (getIsAuthActionLoading(getState(), action)) {
 		return Promise.resolve();
@@ -64,6 +64,7 @@ const handleAuthAction = (dispatch, getState) => (action, data = {}) => {
 
 	return api[`${action}`](data).then(
 		response => {
+			console.log(response);
 			if (response.success) {
 				handleToken(response.token, action);
 				dispatch({
@@ -144,3 +145,5 @@ export const editTodo = (id, data) => (dispatch, getState) => handleAction(dispa
 export const login = (data) => (dispatch, getState) => handleAuthAction(dispatch, getState)('login', data);
 
 export const logout = () => (dispatch, getState) => handleAuthAction(dispatch, getState)('logout');
+
+export const register = (data) => (dispatch, getState) => handleAuthAction(dispatch, getState)('register', data);

@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const api = axios.create({
 	baseURL: process.env.REACT_APP_API_URL,
-	timeout: 1000,
+	timeout: 10000,
 	headers: {
 	  'Content-Type': 'application/json',
 	}
@@ -20,7 +20,7 @@ const handleError = (err) => {
 	if (err.response) {
 		return err.response.data;
 	} else {
-		return {success: false};
+		return {success: false, message: err.message};
 	}
 };
 
@@ -80,6 +80,13 @@ export const login = (credentials) =>
 
 export const logout = () =>
 	api.post('/users/logout')
+		.then(
+			response => response.data,
+			err => handleError(err)
+		);
+
+export const register = (data) =>
+	api.post('/users/signup', data)
 		.then(
 			response => response.data,
 			err => handleError(err)
