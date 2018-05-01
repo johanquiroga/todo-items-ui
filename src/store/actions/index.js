@@ -64,7 +64,6 @@ const handleAuthAction = (dispatch, getState) => (action, data = {}) => {
 
 	return api[`${action}`](data).then(
 		response => {
-			console.log(response);
 			if (response.success) {
 				handleToken(response.token, action);
 				dispatch({
