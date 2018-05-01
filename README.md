@@ -77,8 +77,10 @@ Construye y publica la aplicación con Github Pages en el dominio configurado en
 
 ## Variables de entorno
 
-Para este proyecto se debe configurar una variable de entorno: `REACT_APP_API_URL`. Esta es la dirección completa del servidor y permite la correcta configuración del cliente para las llamadas HTTP.  
- También se debe tener en cuenta que si se van a correr localmente varios proyectos de React.js/Node.js, por ejemplo esta aplicación y el servidor, se debe configurar el puerto de algunos de los dos para que no hayan problemas. Para esta aplicación se puede lograr configurando la variable de entorno `PORT` en el archivo `.env`.
+Para este proyecto se debe configurar una variable de entorno: `REACT_APP_API_URL`. Esta es la dirección completa del servidor en producción y permite la correcta configuración del cliente para las llamadas HTTP.  
+Igualmente, en el ambiente de desarrollo se debe configurar la variable `REACT_APP_DEV_API_URL` la cual será la dirección del servidor de pruebas/desarrollo.  
+
+También se debe tener en cuenta que si se van a correr localmente varios proyectos de React.js/Node.js, por ejemplo esta aplicación y el servidor, se debe configurar el puerto de algunos de los dos para que no hayan problemas. Para esta aplicación se puede lograr configurando la variable de entorno `PORT` en el archivo `.env`.
 
 ## Publicación
 
@@ -111,7 +113,7 @@ Agregar los siguientes scripts en `package.json`:
     "start": "react-scripts start",
     "build": "react-scripts build",
 ```
- 
+
 #### Paso 3: Publicar al ejecutar `npm run deploy`
 
 ```sh
