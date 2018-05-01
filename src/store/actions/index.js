@@ -2,7 +2,7 @@ import { normalize } from 'normalizr';
 import * as schema from './schema';
 import { getIsFetching, getIsActionLoading, getIsAuthActionLoading } from '../reducers';
 import * as api from '../../api';
-import { removeAuthState } from '../../localStorage';
+import { saveAuthState, removeAuthState } from '../../localStorage';
 
 const handleAction = (dispatch, getState) => (action, data) => {
 	if (getIsActionLoading(getState(), action)) {
@@ -42,13 +42,18 @@ const handleAction = (dispatch, getState) => (action, data) => {
 	);
 };
 
-export const handleToken = (token, action) => {
-	if (action === 'logout') {
-		api.removeApiAuthHeader();
-		removeAuthState();
-	}
-	if (token && action === 'login') {
-		api.setApiAuthHeader(token);
+export const handleToken = ({success, user}, token, action, getState) => {
+	if (success) {
+		if (action === 'logout') {
+			api.removeApiAuthHeader();
+			removeAuthState();
+		}
+		if (token && (action === 'login' || action === 'getUser')) {
+			saveAuthState({
+				auth: {isAuth: success, authToken: token, userInfo: user}
+		  });
+			api.setApiAuthHeader(token);
+		}
 	}
 };
 
@@ -65,11 +70,12 @@ const handleAuthAction = (dispatch, getState) => (action, data = {}) => {
 	return api[`${action}`](data).then(
 		response => {
 			if (response.success) {
-				handleToken(response.token, action);
+				const token = response.token || data.authToken || null;
+				handleToken(response, token, action, getState);
 				dispatch({
 					type: `${action.toUpperCase()}_SUCCESS`,
 					response: normalize(response.user, schema.user),
-					token: response.token ? response.token : null,
+					token,
 					actionName: action,
 				});
 				return response.success;
@@ -146,3 +152,5 @@ export const login = (data) => (dispatch, getState) => handleAuthAction(dispatch
 export const logout = () => (dispatch, getState) => handleAuthAction(dispatch, getState)('logout');
 
 export const register = (data) => (dispatch, getState) => handleAuthAction(dispatch, getState)('register', data);
+
+export const getUser = (data) => (dispatch, getState) => handleAuthAction(dispatch, getState)('getUser', data);

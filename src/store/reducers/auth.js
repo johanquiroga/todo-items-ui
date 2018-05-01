@@ -6,6 +6,7 @@ const createAuthState = () => {
 			case 'LOGOUT_SUCCESS':
 				return false;
 			case 'LOGIN_SUCCESS':
+			case 'GETUSER_SUCCESS':
 				return true;
 			default:
 				return state;
@@ -16,6 +17,7 @@ const createAuthState = () => {
 		switch (action.type) {
 			case 'REGISTER_SUCCESS':
 			case 'LOGIN_SUCCESS':
+			case 'GETUSER_SUCCESS':
 				return action.response.entities.users[action.response.result];
 			case 'REGISTER_FAILURE':
 			case 'LOGIN_FAILURE':
@@ -29,6 +31,7 @@ const createAuthState = () => {
 	const authToken = (state = null, action) => {
 		switch (action.type) {
 			case 'LOGIN_SUCCESS':
+			case 'GETUSER_SUCCESS':
 				return action.token;
 			case 'LOGIN_FAILURE':
 			case 'LOGOUT_SUCCESS':

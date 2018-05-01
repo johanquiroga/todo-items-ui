@@ -1,10 +1,11 @@
 import axios from 'axios';
 
 const api = axios.create({
-	baseURL: process.env.REACT_APP_API_URL,
+	baseURL: process.env.NODE_ENV === 'production' ? process.env.REACT_APP_API_URL : process.env.REACT_APP_DEV_API_URL,
 	timeout: 10000,
 	headers: {
 	  'Content-Type': 'application/json',
+		'Accept': 'application/json',
 	}
 });
 
@@ -90,4 +91,11 @@ export const register = (data) =>
 		.then(
 			response => response.data,
 			err => handleError(err)
+		);
+
+export const getUser = (data) =>
+	api.get(`/users/${data.userInfo._id}`, {headers: {Authorization: `Bearer ${data.authToken}`}})
+		.then(
+			response => response.data,
+			err => handleError(err),
 		);

@@ -19,6 +19,7 @@ const actionState = combineReducers({
 	register: createAuthActionState('register'),
 	logout: createAuthActionState('logout'),
 	login: createAuthActionState('login'),
+  getUser: createAuthActionState('getUser'),
 });
 
 const todos = combineReducers({
