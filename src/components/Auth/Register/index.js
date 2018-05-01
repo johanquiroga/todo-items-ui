@@ -3,7 +3,7 @@ import { Container, Grid, Header, Form, Segment, Message, Button, List } from 's
 import { NavLink, Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { register } from '../../../store/actions';
-import { messages, validators } from '../../../constants';
+import { messages, validators, authCondition } from '../../../constants';
 import { compose } from 'recompose';
 import { getAuthActionErrorMessage, getIsAuth, getIsAuthActionLoading } from '../../../store/reducers';
 
@@ -26,22 +26,36 @@ const initialState = {
 };
 
 class Register extends Component {
+	_isMounted = false;
+
 	constructor(props) {
 		super(props);
 		this.state = initialState;
 	}
 
-	resetState = () => this.setState(initialState);
+	resetState = () => this._isMounted && this.setState(initialState);
 
 	componentDidMount() {
-		if (this.props.isAuth) {
+		this._isMounted = true;
+
+		if (authCondition(this.props)) {
+			this.toHome();
+		}
+	}
+
+	componentWillUnmount() {
+    this._isMounted = false;
+  }
+
+	componentWillReceiveProps(props) {
+		if (authCondition(props)) {
 			this.toHome();
 		}
 	}
 
 	toHome = () => this.props.history.replace('/');
 
-	handleChange = (e, {name, value}) => this.setState({ [name]: value });
+	handleChange = (e, {name, value}) => this._isMounted && this.setState({ [name]: value });
 
 	handleSubmit = () => {
 		const { email, password, firstName, lastName, valid } = this.state;
@@ -214,8 +228,8 @@ class Register extends Component {
 const mapStateToProps = (state) => {
 	return {
 		isAuth: getIsAuth(state),
-		errorMessage: getAuthActionErrorMessage(state, 'register'),
-		isLoading: getIsAuthActionLoading(state, 'register'),
+		errorMessage: getAuthActionErrorMessage(state, 'register') || getAuthActionErrorMessage(state, 'getUser'),
+		isLoading: getIsAuthActionLoading(state, 'register') || getAuthActionErrorMessage(state, 'getUser'),
 	};
 };
 
