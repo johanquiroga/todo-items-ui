@@ -29,7 +29,6 @@ const Todo = ({
   isDeleteLoading,
 }) => (
     <List.Item
-      onDoubleClick={() => console.log('double click')}
       active={!completed}
       onMouseEnter={() => setFocus(true)}
       onMouseLeave={() => setFocus(false)}
@@ -52,7 +51,7 @@ const Todo = ({
         verticalAlign='middle'
         onClick={onTodoClick}
         size='large'
-        name={completed ? 'checkmark box' : (isToggleLoading || isEditLoading) ? 'spinner' : 'square outline'}
+        name={(isToggleLoading || isEditLoading) ? 'spinner' : completed ? 'checkmark box' : 'square outline'}
         link
         loading={isToggleLoading || isEditLoading}
       />
@@ -72,28 +71,32 @@ const Todo = ({
 			      focused={focused}
 			      onFocusChange={({focused}) => setFocused(focused)}
 			      small
-			      showDefaultInputIcon
+			      showDefaultInputIcon={!completed}
 			      inputIconPosition='after'
 			      noBorder
 			      numberOfMonths={1}
+						disabled={completed}
 		      />
         </small>
-	      <Label color={!completed ? priorities[priority].color : 'grey'} tag>
-		      <Dropdown
-			      text={priorities[priority].text}
-			      floating
-		      >
-			      <Dropdown.Menu>
-				      {
-				      	options.map(item =>
-						      <Dropdown.Item key={item.key} value={item.value}
-						      onClick={(e, {value}) => onTodoEdit(_id, {priority: value})}>
-							      {item.text}
-						      </Dropdown.Item>
-					      )
-				      }
-			      </Dropdown.Menu>
-		      </Dropdown>
+	      <Label as='span' color={!completed ? priorities[priority].color : 'grey'} tag>
+		      { !completed ?
+						<Dropdown
+							text={priorities[priority].text}
+							floating
+						>
+							<Dropdown.Menu>
+								{
+									options.map(item =>
+										<Dropdown.Item key={item.key} value={item.value}
+											onClick={(e, {value}) => onTodoEdit(_id, {priority: value})}>
+											{item.text}
+										</Dropdown.Item>
+									)
+								}
+							</Dropdown.Menu>
+						</Dropdown> :
+						priorities[priority].text
+					}
 	      </Label>
       </List.Content>
     </List.Item>
