@@ -63,7 +63,6 @@ class Register extends Component {
 		if (valid) {
 			register({email, password, firstName, lastName})
 				.then((response) => {
-					console.log(response);
 					if (response) {
 						this.resetState();
 						this.setState({registered: true});
