@@ -41,12 +41,23 @@ export const getIsFetching = (state, filter) =>
 
 export const getErrorMessage = (state, filter) =>
 	fromList.getErrorMessage(state.listByFilter[filter]);
+	fromList.getErrorMessage(state.listByFilter[filter]) || getActionErrorMessage(state, ['add', 'delete', 'toggle', 'edit']);
 
 export const getIsActionLoading = (state, action) =>
   fromAction.getIsActionLoading(state.actionState[action]);
 
 export const getActionErrorMessage = (state, action) =>
   fromAction.getActionErrorMessage(state.actionState[action]);
+export const getActionErrorMessage = (state, actions) => {
+  if (typeof actions === 'string') {
+    return fromAction.getActionErrorMessage(state.actionState[actions]);
+  }
+
+  return actions
+    .map(action => fromAction.getActionErrorMessage(state.actionState[action]))
+    .filter(error => error !== null)
+    .join(';');
+};
 
 export const getIsAuthActionLoading = (state, action) =>
 	fromAuthAction.getIsAuthActionLoading(state.actionState[action]);

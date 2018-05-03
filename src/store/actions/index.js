@@ -29,6 +29,9 @@ const handleAction = (dispatch, getState) => (action, data) => {
 					message: response.err
 						? response.err.message || 'Something went wrong.'
 						: 'Something went wrong.'
+						? response.err.message || 'Something went wrong trying to ' + action + ' todo.'
+						: 'Something went wrong trying to ' + action + ' todo.',
+					id,
 				});
 			}
 		},
@@ -37,6 +40,8 @@ const handleAction = (dispatch, getState) => (action, data) => {
 				type: `${action.toUpperCase()}_TODO_FAILURE`,
 				actionName: action,
 				message: error.message || 'Something went wrong.'
+				message: error.message || 'Something went wrong trying to ' + action + ' todo.',
+				id,
 			});
 		}
 	);
