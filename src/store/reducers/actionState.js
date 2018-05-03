@@ -33,14 +33,31 @@ const createActionState = (actionName) => {
     }
   };
 
+  const todoId = (state = null, action) => {
+    if (action.actionName !== actionName && !action.id) {
+      return state;
+    }
+
+    switch (action.type) {
+      case `${actionName.toUpperCase()}_TODO_REQUEST`:
+        return action.id;
+      case `${actionName.toUpperCase()}_TODO_SUCCESS`:
+      case `${actionName.toUpperCase()}_TODO_FAILURE`:
+        return null;
+      default:
+        return state;
+    }
+  };
+
   return combineReducers({
     isLoading,
-    errorMessage
+    errorMessage,
+    todoId,
   });
 };
 
 export default createActionState;
 
-export const getIsActionLoading = (state) => state.isLoading;
+export const getIsActionLoading = (state, id) => state.isLoading && state.todoId === id;
 
 export const getActionErrorMessage = (state) => state.errorMessage;

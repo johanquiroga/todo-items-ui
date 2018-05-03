@@ -40,14 +40,11 @@ export const getIsFetching = (state, filter) =>
   fromList.getIsFetching(state.listByFilter[filter]);
 
 export const getErrorMessage = (state, filter) =>
-	fromList.getErrorMessage(state.listByFilter[filter]);
 	fromList.getErrorMessage(state.listByFilter[filter]) || getActionErrorMessage(state, ['add', 'delete', 'toggle', 'edit']);
 
-export const getIsActionLoading = (state, action) =>
-  fromAction.getIsActionLoading(state.actionState[action]);
+export const getIsActionLoading = (state, action, id) =>
+  fromAction.getIsActionLoading(state.actionState[action], id);
 
-export const getActionErrorMessage = (state, action) =>
-  fromAction.getActionErrorMessage(state.actionState[action]);
 export const getActionErrorMessage = (state, actions) => {
   if (typeof actions === 'string') {
     return fromAction.getActionErrorMessage(state.actionState[actions]);

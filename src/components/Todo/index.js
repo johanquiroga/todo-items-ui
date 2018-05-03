@@ -102,10 +102,10 @@ const Todo = ({
     </List.Item>
 );
 
-const mapStateToProps = (state) => ({
-	isEditLoading: getIsActionLoading(state, 'edit'),
-	isToggleLoading: getIsActionLoading(state, 'toggle'),
-	isDeleteLoading: getIsActionLoading(state, 'delete'),
+const mapStateToProps = (state, {_id}) => ({
+	isEditLoading: getIsActionLoading(state, 'edit', _id),
+	isToggleLoading: getIsActionLoading(state, 'toggle', _id),
+	isDeleteLoading: getIsActionLoading(state, 'delete', _id),
 });
 
 export default compose(
