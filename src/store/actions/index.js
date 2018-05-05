@@ -38,6 +38,7 @@ const handleAction = (dispatch, getState) => (action, data) => {
 					onRetry: () => dispatch(actions[`${action}Todo`](...retryArgs)),
 				});
 			}
+			return response.success;
 		},
 		error => {
 			const retryArgs = Object.values(data);
@@ -48,6 +49,7 @@ const handleAction = (dispatch, getState) => (action, data) => {
 				id,
 				onRetry: () => dispatch(actions[`${action}Todo`](...retryArgs)),
 			});
+			return false;
 		}
 	);
 };

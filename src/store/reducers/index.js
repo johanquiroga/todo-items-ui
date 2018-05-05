@@ -39,11 +39,11 @@ export const getVisibleTodos = (state, filter) => {
 export const getIsFetching = (state, filter) =>
   fromList.getIsFetching(state.listByFilter[filter]);
 
+export const getIsActionLoading = (state, action, id = null) =>
+  fromAction.getIsActionLoading(state.actionState[action], id);
+
 export const getErrorMessage = (state, filter) =>
 	fromList.getErrorMessage(state.listByFilter[filter]) || getActionErrorMessage(state, ['add', 'delete', 'toggle', 'edit']);
-
-export const getIsActionLoading = (state, action, id) =>
-  fromAction.getIsActionLoading(state.actionState[action], id);
 
 export const getActionErrorMessage = (state, actions) => {
   if (typeof actions === 'string') {

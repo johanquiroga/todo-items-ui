@@ -5,20 +5,25 @@ import { Form, Segment, Button } from 'semantic-ui-react';
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 import { SingleDatePicker } from 'react-dates';
+import { getIsActionLoading } from '../../store/reducers';
 import { addTodo } from '../../store/actions';
 import { priorities } from '../../constants';
 
 const options = Object.values(priorities);
 
-let AddTodo = ({dispatch, input, setInput, focused, setFocused, date, setDate, priority, setPriority}) => (
+let AddTodo = ({addTodo, isLoading, input, setInput, focused, setFocused, date, setDate, priority, setPriority}) => (
   <Segment basic attached='top'>
-	  <Form onSubmit={() => {
+	  <Form loading={isLoading} onSubmit={() => {
 	  	if (input.trim() !== '' && date !== null && priority !== -1) {
-			  dispatch(addTodo({name: input.trim(), dueDate: date.toISOString(), priority}));
-			  setInput('');
-			  setDate(null);
-			  setFocused(null);
-			  setPriority(-1);
+			  addTodo({name: input.trim(), dueDate: date.toISOString(), priority})
+        .then((response) => {
+          if (response) {
+            setInput('');
+            setDate(null);
+            setFocused(null);
+            setPriority(-1);
+          }
+        });
 		  }
     }}>
       <Form.Group inline widths='equal'>
@@ -51,8 +56,15 @@ let AddTodo = ({dispatch, input, setInput, focused, setFocused, date, setDate, p
 		</Form>
   </Segment>
 );
+
+const mapStateToProps = (state) => {
+  return {
+    isLoading: getIsActionLoading(state, 'add'),
+  };
+};
+
 AddTodo = compose(
-  connect(),
+  connect(mapStateToProps, {addTodo}),
   withState('input', 'setInput', ''),
 	withState('date', 'setDate', null),
 	withState('priority', 'setPriority', -1),
