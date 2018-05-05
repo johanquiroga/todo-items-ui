@@ -54,7 +54,7 @@ const handleAction = (dispatch, getState) => (action, data) => {
 	);
 };
 
-export const handleToken = ({success, user}, token, action, getState) => {
+const handleToken = ({success, user}, token, action, getState) => {
 	if (success) {
 		if (action === 'logout') {
 			api.removeApiAuthHeader();
@@ -90,7 +90,6 @@ const handleAuthAction = (dispatch, getState) => (action, data = {}) => {
 					token,
 					actionName: action,
 				});
-				return response.success;
 			} else {
 				dispatch({
 					type: `${action.toUpperCase()}_FAILURE`,
@@ -99,8 +98,8 @@ const handleAuthAction = (dispatch, getState) => (action, data = {}) => {
 						? response.err.message || 'Something went wrong.'
 						: 'Something went wrong.'
 				});
-				return response.success;
 			}
+			return response.success;
 		},
 		error => {
 			dispatch({

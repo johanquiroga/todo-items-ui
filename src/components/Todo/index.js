@@ -34,7 +34,7 @@ const Todo = ({
       onMouseLeave={() => setFocus(false)}
     >
       {
-        isFocused &&
+        (isDeleteLoading || isFocused) &&
         <List.Content floated='right'>
           <List.Icon
             verticalAlign='middle'
