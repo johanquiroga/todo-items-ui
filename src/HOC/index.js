@@ -18,8 +18,8 @@ export const withError = (conditionFn) => (Component) => (props) => (
     {
       conditionFn(props) &&
       <FetchError
-        messages={props.errorMessage}
-        onRetry={() => props.fetchTodos(props.filter)}
+        message={props.errorMessage}
+        onRetry={props.onRetry}
       />
     }
   </div>

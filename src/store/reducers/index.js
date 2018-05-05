@@ -52,8 +52,7 @@ export const getActionErrorMessage = (state, actions) => {
 
   return actions
     .map(action => fromAction.getActionErrorMessage(state.actionState[action]))
-    .filter(error => error !== null)
-    .join(';');
+    .find(error => error !== null);
 };
 
 export const getIsAuthActionLoading = (state, action) =>
