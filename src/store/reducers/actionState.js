@@ -33,6 +33,21 @@ const createActionState = (actionName) => {
     }
   };
 
+  const onRetry = (state = null, action) => {
+    if (action.actionName !== actionName) {
+      return state;
+    }
+    switch (action.type) {
+      case `${actionName.toUpperCase()}_TODO_FAILURE`:
+        return action.onRetry;
+      case `${actionName.toUpperCase()}_TODO_SUCCESS`:
+      case `${actionName.toUpperCase()}_TODO_REQUEST`:
+        return null;
+      default:
+        return state;
+    }
+  };
+
   const todoId = (state = null, action) => {
     if (action.actionName !== actionName && !action.id) {
       return state;
@@ -52,6 +67,7 @@ const createActionState = (actionName) => {
   return combineReducers({
     isLoading,
     errorMessage,
+    onRetry,
     todoId,
   });
 };
@@ -61,3 +77,5 @@ export default createActionState;
 export const getIsActionLoading = (state, id) => state.isLoading && state.todoId === id;
 
 export const getActionErrorMessage = (state) => state.errorMessage;
+
+export const getOnRetry = (state) => state.onRetry;

@@ -4,10 +4,12 @@ import { getIsFetching, getIsActionLoading, getIsAuthActionLoading } from '../re
 import * as api from '../../api';
 import { saveAuthState, removeAuthState } from '../../localStorage';
 
-const handleAction = (dispatch, getState) => (action, data, id = null) => {
+const handleAction = (dispatch, getState) => (action, data) => {
 	if (getIsActionLoading(getState(), action)) {
 		return Promise.resolve();
 	}
+
+	const { id = null } = data;
 
 	dispatch({
 		type: `${action.toUpperCase()}_TODO_REQUEST`,
@@ -25,6 +27,7 @@ const handleAction = (dispatch, getState) => (action, data, id = null) => {
 					id,
 				});
 			} else {
+				const retryArgs = Object.values(data);
 				dispatch({
 					type: `${action.toUpperCase()}_TODO_FAILURE`,
 					actionName: action,
@@ -32,15 +35,18 @@ const handleAction = (dispatch, getState) => (action, data, id = null) => {
 						? response.err.message || 'Something went wrong trying to ' + action + ' todo.'
 						: 'Something went wrong trying to ' + action + ' todo.',
 					id,
+					onRetry: () => dispatch(actions[`${action}Todo`](...retryArgs)),
 				});
 			}
 		},
 		error => {
+			const retryArgs = Object.values(data);
 			dispatch({
 				type: `${action.toUpperCase()}_TODO_FAILURE`,
 				actionName: action,
 				message: error.message || 'Something went wrong trying to ' + action + ' todo.',
 				id,
+				onRetry: () => dispatch(actions[`${action}Todo`](...retryArgs)),
 			});
 		}
 	);
@@ -129,7 +135,8 @@ export const fetchTodos = (filter) => (dispatch, getState) => {
 			    filter,
 			    message: response.err
 				    ? response.err.message || 'Something went wrong.'
-				    : 'Something went wrong.'
+				    : 'Something went wrong.',
+						onRetry: () => dispatch(fetchTodos(filter)),
 		    });
 	    }
     },
@@ -137,19 +144,20 @@ export const fetchTodos = (filter) => (dispatch, getState) => {
       dispatch({
         type: 'FETCH_TODOS_FAILURE',
         filter,
-        message: error.message || 'Something went wrong.'
+        message: error.message || 'Something went wrong.',
+				onRetry: () => dispatch(fetchTodos(filter)),
       });
     }
   );
 };
 
-export const addTodo = (todo) => (dispatch, getState) => handleAction(dispatch, getState)('add', todo);
+export const addTodo = (todo) => (dispatch, getState) => handleAction(dispatch, getState)('add', {todo});
 
-export const toggleTodo = (id, status) => (dispatch, getState) => handleAction(dispatch, getState)('toggle', {id, status}, id);
+export const toggleTodo = (id, status) => (dispatch, getState) => handleAction(dispatch, getState)('toggle', {id, status});
 
-export const deleteTodo = (id) => (dispatch, getState) => handleAction(dispatch, getState)('delete', id, id);
+export const deleteTodo = (id) => (dispatch, getState) => handleAction(dispatch, getState)('delete', {id});
 
-export const editTodo = (id, data) => (dispatch, getState) => handleAction(dispatch, getState)('edit', {id, data}, id);
+export const editTodo = (id, data) => (dispatch, getState) => handleAction(dispatch, getState)('edit', {id, data});
 
 export const login = (data) => (dispatch, getState) => handleAuthAction(dispatch, getState)('login', data);
 
@@ -158,3 +166,15 @@ export const logout = () => (dispatch, getState) => handleAuthAction(dispatch, g
 export const register = (data) => (dispatch, getState) => handleAuthAction(dispatch, getState)('register', data);
 
 export const getUser = (data) => (dispatch, getState) => handleAuthAction(dispatch, getState)('getUser', data);
+
+const actions = {
+	fetchTodos,
+	addTodo,
+	toggleTodo,
+	deleteTodo,
+	editTodo,
+	login,
+	logout,
+	register,
+	getUser,
+};

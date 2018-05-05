@@ -55,6 +55,19 @@ export const getActionErrorMessage = (state, actions) => {
     .find(error => error !== null);
 };
 
+export const getOnRetry = (state, filter) =>
+  fromList.getOnRetry(state.listByFilter[filter]) || getActionOnRetry(state, ['add', 'delete', 'toggle', 'edit']);
+
+export const getActionOnRetry = (state, actions) => {
+  if (typeof actions === 'string') {
+    return fromAction.getOnRetry(state.actionState[actions]);
+  }
+
+  return actions
+    .map(action => fromAction.getOnRetry(state.actionState[action]))
+    .find(error => error !== null);
+};
+
 export const getIsAuthActionLoading = (state, action) =>
 	fromAuthAction.getIsAuthActionLoading(state.actionState[action]);
 

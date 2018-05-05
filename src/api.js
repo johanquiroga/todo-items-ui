@@ -44,7 +44,7 @@ export const fetchTodos = (filter) =>
 	    }
     }, err => handleError(err));
 
-export const addTodo = (todo) =>
+export const addTodo = ({todo}) =>
   api.post('/tasks', {...todo})
     .then(
     	response => response.data,
@@ -58,7 +58,7 @@ export const toggleTodo = ({id, status}) =>
 	    err => handleError(err)
 	  );
 
-export const deleteTodo = (id) =>
+export const deleteTodo = ({id}) =>
   api.delete(`/tasks/${id}`)
 	  .then(
 	    response => response.data,

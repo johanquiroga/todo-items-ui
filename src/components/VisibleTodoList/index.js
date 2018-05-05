@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
 import { loadingCondition, errorCondition } from '../../constants';
 import TodoList from '../TodoList';
-import { getVisibleTodos, getIsFetching, getErrorMessage } from '../../store/reducers';
+import { getVisibleTodos, getIsFetching, getErrorMessage, getOnRetry } from '../../store/reducers';
 import * as actions from '../../store/actions';
 import * as enhance from '../../HOC';
 import { Segment, Message } from 'semantic-ui-react';
@@ -56,6 +56,7 @@ const mapStateToProps = (state, { match: { params }}) => {
     todos: getVisibleTodos(state, filter),
     errorMessage: getErrorMessage(state, filter),
     isLoading: getIsFetching(state, filter),
+    onRetry: getOnRetry(state, filter),
     filter,
   };
 };
